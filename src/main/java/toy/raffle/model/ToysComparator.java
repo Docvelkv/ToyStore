@@ -3,6 +3,13 @@ package toy.raffle.model;
 import java.util.Comparator;
 
 public class ToysComparator implements Comparator<Toy> {
+
+    /**
+     * переопределение метода compare
+     * @param o1 первый объект для сравнения
+     * @param o2 второй объект для сравнения
+     * @return int
+     */
     @Override
     public int compare(Toy o1, Toy o2) {
         if (o1 == o2) return 0;

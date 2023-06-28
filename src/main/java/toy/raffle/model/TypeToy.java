@@ -1,6 +1,6 @@
 package toy.raffle.model;
 
-public enum Name {
+public enum TypeToy {
     doll, robot, constructor
 }
 

@@ -2,30 +2,43 @@ package toy.raffle.model;
 
 
 public class Toy {
-    private final Name name;
+    TypeToy typeToy;
     private final int id;
-    private final int wight;
+    int wight;
 
+    /**
+     * Конструктор
+     * @param id номер игрушки
+     */
     public Toy(int id) {
         this.id = id;
-        this.name = getName();
+        this.typeToy = getTypeToy();
         this.wight = getWight();
     }
 
+    /**
+     * Получение номера игрушки
+     * @return int
+     */
     public int getId() {
-        if (this.name == Name.doll) return 1;
-        if (this.name == Name.robot) return 2;
-        if (this.name == Name.constructor) return 3;
-        return 0;
+        return id;
     }
 
-    public Name getName() {
-        if (this.id == 1) return Name.doll;
-        if (this.id == 2) return Name.robot;
-        if (this.id == 3) return Name.constructor;
+    /**
+     * Получение типа игрушки
+     * @return TypeToy
+     */
+    public TypeToy getTypeToy() {
+        if (this.id == 1) return TypeToy.doll;
+        if (this.id == 2) return TypeToy.robot;
+        if (this.id == 3) return TypeToy.constructor;
         return null;
     }
 
+    /**
+     * Получение веса игрушки (в граммах)
+     * @return int
+     */
     public int getWight() {
         if (this.id == 1) return 1300;
         if (this.id == 2) return 900;
@@ -33,17 +46,25 @@ public class Toy {
         return  0;
     }
 
+    /**
+     * Получение названия игрушки
+     * @return String
+     */
     public String getTitle() {
-        if (this.id == 1) return "Кукла Алиса";
-        if (this.id == 2) return "Робот Гига7";
-        if (this.id == 3) return "Конструктор LEGO";
-        return "";
+        if (this.id == 1) return "Алиса";
+        if (this.id == 2) return "Гига7";
+        if (this.id == 3) return "LEGO";
+        return "Игрушек с таким id нет";
     }
 
+    /**
+     * переопределение метода toString
+     * @return String
+     */
     @Override
     public String toString() {
         return "\nИгрушка: №" + this.getId() + ", " +
-                "название - " + this.getTitle() + ", " +
+                this.getTypeToy() + " \"" + this.getTitle() + "\"" + ", " +
                 "вес - " + this.getWight() + "г.";
     }
 }
