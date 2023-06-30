@@ -5,7 +5,9 @@ import java.util.Comparator;
 public class ToysComparator implements Comparator<Toy> {
 
     /**
-     * переопределение метода compare
+     * переопределение метода compare. Объекты сравниваются:
+     * по весу
+     * при одинаковом весе, по названию
      * @param o1 первый объект для сравнения
      * @param o2 второй объект для сравнения
      * @return int

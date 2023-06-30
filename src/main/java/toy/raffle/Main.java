@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         ToysService service = new ToysService();
         PriorityQueue<Toy> set = service.setToys(10, 3);
-        service.drawingToys(set);
+        service.saving(service.drawingToys(set));
+        System.out.println(service.loading("3"));
     }
 }

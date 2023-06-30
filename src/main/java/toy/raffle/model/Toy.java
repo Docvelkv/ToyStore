@@ -1,7 +1,9 @@
 package toy.raffle.model;
 
 
-public class Toy {
+import java.io.Serializable;
+
+public class Toy implements Serializable {
     TypeToy typeToy;
     private final int id;
     int wight;

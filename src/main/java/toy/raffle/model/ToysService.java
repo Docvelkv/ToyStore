@@ -1,9 +1,19 @@
 package toy.raffle.model;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ToysService {
+public class ToysService implements SaveAndLoad{
+
+    private final Path pathSaveDir = Paths.get("./src/main/resources/archive");
 
     /**
      * случайное число из диапазона от 1 до
@@ -30,10 +40,55 @@ public class ToysService {
         return set;
     }
 
-    public void drawingToys(PriorityQueue<Toy> set) {
+    public List<Toy> drawingToys(PriorityQueue<Toy> set) {
+        List<Toy> lstWin = new ArrayList<>();
         Toy currentToy;
         while ((currentToy = set.poll()) != null) {
-            System.out.println("Ваш приз: " + currentToy);
+            lstWin.add(currentToy);
         }
+        return lstWin;
+    }
+
+    private int numberOfSavedFiles() {
+        List<String> list = new ArrayList<>();
+        try (DirectoryStream<Path> files = Files.newDirectoryStream(pathSaveDir)) {
+            for (Path path : files){
+                list.add(path.getFileName().toString());
+            }
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return list.size();
+    }
+
+    @Override
+    public void saving(List<Toy> lst) {
+        try {
+            Files.createDirectories(pathSaveDir);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        int name = numberOfSavedFiles() + 1;
+        Path dirPath = Paths.get(pathSaveDir + "/" + name + ".txt");
+        try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(dirPath))){
+            oos.writeObject(lst);
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Override
+    public String loading(String name) {
+        Path dirPath = Paths.get(pathSaveDir + "/" + name + ".txt");
+        try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(dirPath))){
+            return ois.readObject().toString();
+        }
+        catch (Exception ex){
+            System.out.printf("Всего сохранённых файлов %d (файла с именем \"%s\" нет.)\n", numberOfSavedFiles(), name);
+        }
+        return "___";
     }
 }
