@@ -1,15 +1,9 @@
 package toy.raffle;
 
-import toy.raffle.model.Toy;
-import toy.raffle.model.ToysService;
-
-import java.util.PriorityQueue;
+import toy.raffle.view.Console;
 
 public class Main {
     public static void main(String[] args) {
-        ToysService service = new ToysService();
-        PriorityQueue<Toy> set = service.setToys(10, 3);
-        service.saving(service.drawingToys(set));
-        System.out.println(service.loading("3"));
+        new Console().start();
     }
 }

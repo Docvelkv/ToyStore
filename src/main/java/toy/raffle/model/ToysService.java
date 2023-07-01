@@ -1,5 +1,8 @@
 package toy.raffle.model;
 
+import toy.raffle.model.toy.Toy;
+import toy.raffle.model.toy.ToysComparator;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.DirectoryStream;
@@ -40,6 +43,11 @@ public class ToysService implements SaveAndLoad{
         return set;
     }
 
+    /**
+     * Формирование списка объектов в соответствии с приоритетом
+     * @param set коллекция PriorityQueue
+     * @return List<Toy>
+     */
     public List<Toy> drawingToys(PriorityQueue<Toy> set) {
         List<Toy> lstWin = new ArrayList<>();
         Toy currentToy;
@@ -49,7 +57,11 @@ public class ToysService implements SaveAndLoad{
         return lstWin;
     }
 
-    private int numberOfSavedFiles() {
+    /**
+     * Подсчёт количества сохранённых объектов
+     * @return int
+     */
+    public int numberOfSavedFiles() {
         List<String> list = new ArrayList<>();
         try (DirectoryStream<Path> files = Files.newDirectoryStream(pathSaveDir)) {
             for (Path path : files){
@@ -62,6 +74,10 @@ public class ToysService implements SaveAndLoad{
         return list.size();
     }
 
+    /**
+     * Сохранение объекта
+     * @param lst объект для сохранения
+     */
     @Override
     public void saving(List<Toy> lst) {
         try {
@@ -80,14 +96,24 @@ public class ToysService implements SaveAndLoad{
         }
     }
 
+    /**
+     * Загрузка содержимого сохранённого файла
+     *
+     * @param name имя файла (без расширения)
+     * @return String
+     */
     @Override
     public String loading(String name) {
         Path dirPath = Paths.get(pathSaveDir + "/" + name + ".txt");
         try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(dirPath))){
-            return ois.readObject().toString();
+            return ois.readObject().toString()
+                    .replaceAll("[\\[\\]]", "")
+                    .replace(".,", "")
+                    .replace(".", "");
         }
         catch (Exception ex){
-            System.out.printf("Всего сохранённых файлов %d (файла с именем \"%s\" нет.)\n", numberOfSavedFiles(), name);
+            System.out.printf("Всего сохранённых файлов %d (файла с именем \"%s\" нет.)\n",
+                    numberOfSavedFiles(), name);
         }
         return "___";
     }

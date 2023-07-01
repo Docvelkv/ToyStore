@@ -1,4 +1,4 @@
-package toy.raffle.model;
+package toy.raffle.model.toy;
 
 
 import java.io.Serializable;
